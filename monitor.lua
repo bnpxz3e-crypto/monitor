@@ -151,4 +151,29 @@ task.spawn(function()
         log("Runtime error: " .. tostring(result),
             Color3.fromRGB(255, 70, 70))
     end
+
+    -- Additional Live Monitor
+local LogService = game:GetService("LogService")
+local TeleportService = game:GetService("TeleportService")
+
+local function watchLog(message, messageType)
+    if messageType == Enum.MessageType.MessageError then
+        log("GAME ERROR: " .. tostring(message),
+            Color3.fromRGB(255, 80, 80))
+    end
+end
+
+LogService.MessageOut:Connect(watchLog)
+
+TeleportService.TeleportInitFailed:Connect(function(
+    player, result, message, placeId
+)
+    log("TELEPORT FAILED: " .. tostring(message),
+        Color3.fromRGB(255, 170, 70))
+    log("Target Place: " .. tostring(placeId))
+end)
+
+log("Live game monitoring enabled",
+    Color3.fromRGB(0, 255, 130))
+ 
 end)
